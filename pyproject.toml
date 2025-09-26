@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Fetches a more complete calendar from Blackboard and converts it to an ICS file that is then synced to a gist."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+	"requests",
+	"selenium",
+	"pyotp",
+	"ical",
+]
