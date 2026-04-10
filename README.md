@@ -1,4 +1,4 @@
-# Blackboard2ICS
+# blackboard2ics
 
 A hacked together Python project for managing and syncing an improved Blackboard calendar.
 
@@ -15,7 +15,7 @@ This uses uv, but it shouldn't need it
 - uv pip install -r pyproject.toml
 - Create a private [GitHub gist](https://gist.github.com/)
 - Create a [fine-grained access token](https://github.com/settings/personal-access-tokens/new)
-- Create secrets.json (see example_secrets.json), this is a plaintext file an should not be stored on an unsecure or public device.
+- Create a `.env` file from `.env.example`, then fill in your secrets. This is a plaintext file and should not be stored on an insecure or public device.
 - uv run main.py
 - create a cron job to run on a timer or when the regular ics updates
 

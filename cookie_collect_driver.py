@@ -1,33 +1,37 @@
 import json
+import os
 import time
 import pyotp
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from env_utils import load_env_file
 
 
 COOKIES_FILE = "cache/response_cookies.json"
-SECRETS_FILE = "secrets.json"
-with open(SECRETS_FILE, "r", encoding="utf-8") as f:
-    secrets = json.load(f)
+load_env_file()
 
 # Configure headless Firefox
 options = Options()
-options.headless = True
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
 
 def collect_cookies():
-    # Load secrets
-    username = secrets["username"]
-    password = secrets["password"]
-    totp_key = secrets.get("totp_key")
+    username = os.getenv("BLACKBOARD_USERNAME")
+    password = os.getenv("BLACKBOARD_PASSWORD")
+    totp_key = os.getenv("BLACKBOARD_TOTP_KEY")
+    login_url = os.getenv("BLACKBOARD_LOGIN_URL")
+
+    if not username or not password or not login_url:
+        raise RuntimeError(
+            "BLACKBOARD_USERNAME, BLACKBOARD_PASSWORD, and BLACKBOARD_LOGIN_URL must be set in .env"
+        )
 
     driver = webdriver.Firefox(options=options)
-    driver.get(secrets["login_url"])
+    driver.get(login_url)
     time.sleep(2)
 
     # Enter username

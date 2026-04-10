@@ -1,13 +1,17 @@
 import datetime
 import json
+import os
 from ical.calendar import Calendar
 from ical.event import Event
 from ical.calendar_stream import IcsCalendarStream
+from env_utils import load_env_file
 
-with open("secrets.json", "r", encoding="utf-8") as f:
-    secrets = json.load(f)
+load_env_file()
 
 calendar = Calendar()
+url_base = os.getenv("BLACKBOARD_URL_BASE")
+if not url_base:
+    raise RuntimeError("BLACKBOARD_URL_BASE is not set in .env")
 
 # Load events from output.json
 with open("cache/output.json", "r", encoding="utf-8") as f:
@@ -44,7 +48,7 @@ for item in data.get("results", []):
     )
     calendar_id = item.get("calendarId", "")
     url = (
-        f"{secrets['url_base']}/ultra/courses/{calendar_id}/outline"
+        f"{url_base}/ultra/courses/{calendar_id}/outline"
         if calendar_id
         else None
     )

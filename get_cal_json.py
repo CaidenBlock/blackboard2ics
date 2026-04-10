@@ -1,18 +1,24 @@
 import os
 import json
+import sys
+from datetime import date, timedelta
 import requests
+from env_utils import load_env_file
 
-with open("secrets.json", "r", encoding="utf-8") as secrets_file:
-    secrets = json.load(secrets_file)
+load_env_file()
 
 
 def main():
+    url_base = os.getenv("BLACKBOARD_URL_BASE")
+    if not url_base:
+        raise RuntimeError("BLACKBOARD_URL_BASE is not set in .env")
 
-    url = f"{secrets['url_base']}/learn/api/v1/calendars/dueDateCalendarItems"
+    url = f"{url_base}/learn/api/v1/calendars/dueDateCalendarItems"
+    seven_days_ago = (date.today() - timedelta(days=7)).isoformat()
 
     params = {
         "limit": "9999",
-        "date": "2025-09-18",
+        "date": seven_days_ago,
         "date_compare": "greaterOrEqual",
         "includeCount": "true",
     }
@@ -40,7 +46,7 @@ def main():
         print(
             "Please export your cookies to response_cookies.json and rerun the script."
         )
-        return
+        return 10
 
     try:
         data = response.json()
@@ -54,6 +60,8 @@ def main():
     with open("cache/response_cookies.json", "w", encoding="utf-8") as f:
         json.dump(cookies_dict, f, indent=4, ensure_ascii=False)
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

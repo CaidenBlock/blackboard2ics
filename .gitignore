@@ -1,4 +1,5 @@
 cache
 .venv
+.env
 secrets.json
 __pycache__
