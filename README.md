@@ -6,6 +6,7 @@ A hacked together Python project for managing and syncing an improved Blackboard
 
 - OAuth support for Microsoft SAML w/ 2FA via selenium, since Blackboard does not have a user API
 - Pushes to a gist, for syncing across
+- Pulls grade details
 - Output calendar can be easily customized, to see what options are available check [the ical docs](https://allenporter.github.io/ical/ical/event.html) 
 
 ## Setup and Usage
